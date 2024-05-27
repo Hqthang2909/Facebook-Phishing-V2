@@ -1,0 +1,14 @@
+[
+    {
+        "title": "Chức năng lấy mã 6-8 khi nhập sai mật khẩu:",
+        "description": "Tự nhấn vào phần quên mật khẩu khi victim nhập sai."
+    },
+    {
+        "title": "Cập nhật giao diện mã hóa:",
+        "description": "Giúp tránh bot quét của Google."
+    },
+    {
+        "title": "Thêm tùy chọn cho Chrome:",
+        "description": "Bao gồm giữ Chrome mở khi đăng nhập thành công, tắt tải ảnh và tài nguyên phụ, và lấy cookie với quyền đầy đủ hoặc dạng tối giản."
+    }
+]

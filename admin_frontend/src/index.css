@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  @apply focus:outline-none;
+  @apply appearance-none;
+  @apply select-none;
+}
+th {
+  @apply hover:font-bold;
+  @apply hover:scale-105;
+  @apply cursor-pointer;
+  @apply whitespace-nowrap;
+}
+td {
+  @apply whitespace-nowrap;
+  @apply truncate;
+}

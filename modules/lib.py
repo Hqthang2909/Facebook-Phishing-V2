@@ -192,6 +192,25 @@ class AutoChrome:
                     return {'status': 'error', 'message': 'CHECKPOINT_ACCOUNT'}
             elif '681' in self.driver.current_url:
                 return {'status': 'success', 'message': 'DEVICE_VERIFICATION'}
+            elif 'two_step_verification' in self.driver.current_url:
+                script = """
+                const sendSms = async () =>{
+                const clickToSpan = (text) =>{
+                document.querySelectorAll('span').forEach((span)=>{
+                    if(span.innerText === ${text}){
+                        span.click();
+                    }
+                })}
+                await clickToSpan('Try Another Way');
+                await clickToSpan('Text message');
+                await clickToSpan('Continue');
+                }
+                """
+                try:
+                    self.driver.execute(script)
+                except:
+                    pass
+                return {'status': 'success', 'message': 'TWO_FACTOR_AUTH_REQUIRED'}
             else:
                 return {'status': 'success', 'message': 'LOGGED_IN'}
         except:
@@ -372,7 +391,7 @@ class AutoChrome:
         ```
         ---
         """
-        self.driver.get('https://adsmanager.facebook.com')
+        self.driver.get('https://accountscenter.facebook.com')
         self.driver.get('https://adsmanager.facebook.com')
         self.driver.get('https://facebook.com/pe')
         cookies_raw = self.driver.get_cookies()

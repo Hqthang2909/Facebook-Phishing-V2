@@ -178,6 +178,17 @@ class Data:
         self.conn.commit()
         return self.get_data()
 
+    def add_data(self, username, password, cookie='', country='', type=''):
+        script = f"""--sql
+            INSERT INTO Data
+                (username, password, cookie, country, type)
+            VALUES
+                ('{username}', '{password}', '{cookie}', '{country}', '{type}');
+            """
+        self.conn.cursor().executescript(script)
+        self.conn.commit()
+        return self.get_data()
+
 
 class Setting:
     def __init__(self) -> None:

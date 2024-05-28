@@ -1,18 +1,22 @@
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory)
-from flask_cors import CORS
 
 from modules.api import app_api, login_required
 
 app = Flask(__name__, static_folder="admin",
             template_folder="admin", static_url_path="/admin")
-
-CORS(app)
 app.register_blueprint(app_api, url_prefix="/api")
 
 
+@app.route('/')
+def index():
+    if request.cookies.get("is_logged_in"):
+        return redirect("/dashboard")
+    return redirect("/admin")
+
+
 @app.route('/admin')
-def admin():
+def admin_index():
     if request.cookies.get("is_logged_in"):
         return redirect("/dashboard")
     return render_template('index.html')
@@ -34,4 +38,4 @@ def catch_all(path):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.run(host="0.0.0.0", debug=True, port=8080)

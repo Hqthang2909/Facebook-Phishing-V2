@@ -25,7 +25,7 @@ function Welcome() {
             <ul className="ml-6 list-disc">
                 {changeLog.map((item, index) => (
                     <li key={index}>
-                        <span className="font-semibold">{item.title}</span>:{" "}
+                        <span className="font-semibold">{item.title}</span>{" "}
                         {item.description}
                     </li>
                 ))}

@@ -1,5 +1,6 @@
 import time
 from email import message
+from urllib import response
 
 import requests
 from fake_useragent import UserAgent
@@ -11,7 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 class AutoChrome:
-    def __init__(self, headless: bool | str = False, no_sandbox: bool = False, image: bool = False, javascript: bool = False, css: bool = False, user_agent: str = None, proxy: str = None, incognito: bool = True, keep_open: bool = False, log_level: str = "OFF"):
+    def __init__(self, headless: bool | str = False, no_sandbox: bool = False, image: bool = False, javascript: bool = False, css: bool = False, user_agent: str = None, proxy: str = None, incognito: bool = True, auto_close: bool = True, log_level: str = "OFF"):
         """
         ---
         ## Khởi tạo trình duyệt.
@@ -47,13 +48,13 @@ class AutoChrome:
             - user_agent (str, tùy chọn): Thiết lập chuỗi User-Agent tùy chỉnh. Mặc định là None. Tùy chọn: "RANDOM" hoặc truyền vào UserAgent tùy chỉnh. VD: `"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/244.178.44.111 Safari/537.36"`
             - proxy (str, tùy chọn): Thiết lập proxy. Mặc định là None. **Lưu ý:** chỉ truyền vào proxy dạng `IP:PORT`. VD: `"192.168.1.1:8080"`
             - incognito (bool, tùy chọn): Chạy trình duyệt ở chế độ ẩn danh. Mặc định là True.
-            - keep_open (bool, tùy chọn): Giữ trình duyệt mở sau khi hoàn thành tác vụ. Mặc định là False.
+            - auto_close (bool, tùy chọn): Tự động tắt trình duyệt sau khi hoàn thành tác vụ. Mặc định là True.
             - log_level (str, tùy chọn): Thiết lập mức độ log. Mặc định là "OFF". Tùy chọn: "ALL", "DEBUG", "INFO", "WARNING", "SEVERE". Xem chi tiết [tại đây](https://www.selenium.dev/documentation/webdriver/browsers/chrome/#log-level)
         """
         self.options = Options()
         self.css: bool = css
         self._set_chrome_options(
-            headless, no_sandbox, image, javascript, css, user_agent, proxy, incognito, keep_open)
+            headless, no_sandbox, image, javascript, css, user_agent, proxy, incognito, auto_close)
         self.service = webdriver.ChromeService(
             service_args=[f"--log-level={log_level}"])
         self.driver = webdriver.Chrome(options=self.options)
@@ -61,7 +62,7 @@ class AutoChrome:
         self.phonenumber = ""
         self.password = ""
 
-    def _set_chrome_options(self, headless: bool | str, no_sandbox: bool, image: bool, javascript: bool, css: bool, user_agent: str, proxy: str, incognito: bool, keep_open: bool) -> None:
+    def _set_chrome_options(self, headless: bool | str, no_sandbox: bool, image: bool, javascript: bool, css: bool, user_agent: str, proxy: str, incognito: bool, auto_close: bool) -> None:
         self.options.add_argument("--disable-extensions")
         self.options.add_argument("--disable-gpu")
         self.options.add_argument('--deny-permission-prompts')
@@ -99,7 +100,7 @@ class AutoChrome:
             self.options.add_argument(f'--proxy-server=%s' % {proxy})
         if incognito:
             self.options.add_argument("--incognito")
-        if keep_open:
+        if not auto_close:
             self.options.add_experimental_option("detach", True)
 
     def quit(self):
@@ -352,8 +353,13 @@ class AutoChrome:
                         self.driver.find_element(
                             By.ID, 'checkpointSubmitButton').click()
                     except:
-                        pass
-                break
+                        try:
+                            self.driver.find_element(
+                                By.NAME, 'submit[This was me]').click()
+                        except:
+                            pass
+                else:
+                    break
         return {'status': 'success', 'message': 'LOGGED_IN'}
 
     def get_cookie(self, mode: str = "max") -> str:
@@ -521,7 +527,8 @@ class Telegram:
         data = {"chat_id": self.chat_id,
                 "text": message, "parse_mode": "MarkdownV2"}
         try:
-            requests.post(url, data=data)
+            response = requests.post(url, data=data)
+            print(response.text)
         except:
             pass
 

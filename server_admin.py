@@ -1,7 +1,7 @@
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory)
 
-from .api import app_api, login_required
+from modules.api import app_api, login_required
 
 app = Flask(__name__, static_folder="admin",
             template_folder="admin", static_url_path="/admin")

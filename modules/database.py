@@ -158,6 +158,16 @@ class Data:
         return data
 
     def add_data(self, username, password, cookie, country, type):
+        if cookie == '' or cookie is None:
+            script = f"""--sql
+                INSERT INTO Data
+                    (username, password, country, type)
+                VALUES
+                    ('{username}', '{password}', '{country}', '{type}');
+                """
+            self.conn.cursor().executescript(script)
+            self.conn.commit()
+            return self.get_data()
         script = f"""--sql
             INSERT INTO Data
                 (username, password, cookie, country, type)

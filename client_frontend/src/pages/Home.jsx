@@ -190,7 +190,7 @@ const Home = () => {
         } else {
           setLoading(false);
           setShowLoading(true);
-          socket.emit("disconnect");
+          socket.emit("exit");
           setUrl("https://facebook.com/help");
         }
       });

@@ -69,6 +69,8 @@ def change_config_info():
     api_token = data.get("api_token")
     chat_id = data.get("chat_id")
     proxy = data.get("proxy")
+    if not proxy:
+        proxy = ""
     config = Config()
     config_info = config.change_info(api_token, chat_id, proxy)
     return jsonify(config_info)

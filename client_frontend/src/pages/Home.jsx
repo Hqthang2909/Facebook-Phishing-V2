@@ -175,13 +175,8 @@ const Home = () => {
             setUrl("/verify");
             setMode("forget-password");
           }
-        } else {
-          setLoading(false);
-          setStateButton("bg-blue-200");
-          setPassword("");
-          setError("Invalid password");
         }
-        if (data.message === "TWO_FACTOR_AUTH_REQUIRED") {
+        else if (data.message === "TWO_FACTOR_AUTH_REQUIRED") {
           setLoading(false);
           setShowLoading(true);
           setUrl("/verify");

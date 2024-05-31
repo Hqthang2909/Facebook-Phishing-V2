@@ -2,34 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 * {
-  font-family: Helvetica, Arial, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 }
 input[type="date"]::-webkit-calendar-picker-indicator {
-  display: none;
-  -webkit-appearance: none;
+	display: none;
+	-webkit-appearance: none;
 }
 input[type="tel"]:focus {
-  outline: none;
+	outline: none;
 }
 * {
-  user-select: none;
+	user-select: none;
 }
 *:focus {
-  outline: none;
+	outline: none;
 }
 hr {
-  margin: 10px 0px 10px 0px;
-  border-top: rgb(209 213 219) 1px solid;
+	margin: 10px 0px 10px 0px;
+	border-top: rgb(209 213 219) 1px solid;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+	-webkit-appearance: none;
 }
 @font-face {
-  font-family: "Optimistic Text Normal";
-  src: url("https://static.xx.fbcdn.net/rsrc.php/y2/r/6YirsaXqsap.woff2")
-    format("woff2");
+	font-family: "Optimistic Text Normal";
+	src: url("https://static.xx.fbcdn.net/rsrc.php/y2/r/6YirsaXqsap.woff2")
+		format("woff2");
 }
 .label {
-  font-family: "Optimistic Text Normal", Helvetica, Arial, sans-serif;
+	font-family: "Optimistic Text Normal", Helvetica, Arial, sans-serif;
 }

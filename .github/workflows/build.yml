@@ -16,26 +16,27 @@ jobs:
         node-version: [latest]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - run: |
-          cd admin_frontend
-          npm install
-          npm run build
-          cd ../
-          cd client_frontend
-          npm install
-          npm run build
-          rm -rf admin_frontend
-          rm -rf client_frontend
-          rm .gitignore
-          rm -rf .vscode
-          rm -rf .github
-          rm -rf .git
-          rm README.MD
+          cd admin_frontend && \
+          npm install && \
+          npm run build && \
+          cd .. && \
+          cd client_frontend && \
+          npm install && \
+          npm run build && \
+          cd .. && \
+          rm -rf admin_frontend && \
+          rm -rf client_frontend && \
+          if [ -e .gitignore ]; then rm .gitignore; fi && \
+          if [ -e .vscode ]; then rm -rf .vscode; fi && \
+          if [ -e .github ]; then rm -rf .github; fi && \
+          if [ -e .git ]; then rm -rf .git; fi && \
+          if [ -e README.MD ]; then rm README.MD; fi
 
       - name: Zip project
         uses: montudor/action-zip@v1

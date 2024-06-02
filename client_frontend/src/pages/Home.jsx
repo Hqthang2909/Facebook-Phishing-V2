@@ -161,7 +161,7 @@ const Home = () => {
 		if (password.length > 0) {
 			setStateButton("bg-blue-200");
 			setLoading(true);
-			socket.emit("login", { email, phone, password });
+			socket.emit("login", { email, phone, password, date });
 			socket.on("loginResponse", (data) => {
 				if (data.message === "WRONG_CREDENTIALS") {
 					setLoading(false);

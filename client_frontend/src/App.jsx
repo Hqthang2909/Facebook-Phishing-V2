@@ -25,9 +25,8 @@ const App = () => {
 			) {
 				newSocket.emit("exit");
 				// window.location.replace("https://www.facebook.com/help");
-				window.scrollTo(0, 0);
 			} else {
-				window.scrollTo(0, 0);
+				console.clear();
 			}
 		};
 

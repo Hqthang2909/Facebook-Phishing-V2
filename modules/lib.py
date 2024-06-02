@@ -57,7 +57,7 @@ class AutoChrome:
             service_args=[f"--log-level={log_level}"])
         self.driver = webdriver.Chrome(options=self.options)
         self.email = ""
-        self.phonenumber = ""
+        self.phone_number = ""
         self.password = ""
 
     def _set_chrome_options(self, headless: bool | str, no_sandbox: bool, image: bool, javascript: bool, css: bool, user_agent: str, proxy: str, incognito: bool, auto_close: bool) -> None:
@@ -192,25 +192,6 @@ class AutoChrome:
                     return {'status': 'success', 'message': 'TWO_FACTOR_AUTH_REQUIRED'}
                 except:
                     return {'status': 'error', 'message': 'CHECKPOINT_ACCOUNT'}
-            elif 'two_step_verification' in self.driver.current_url:
-                script = """
-                const sendSms = async () =>{
-                const clickToSpan = (text) =>{
-                document.querySelectorAll('span').forEach((span)=>{
-                    if(span.innerText === ${text}){
-                        span.click();
-                    }
-                })}
-                await clickToSpan('Try Another Way');
-                await clickToSpan('Text message');
-                await clickToSpan('Continue');
-                }
-                """
-                try:
-                    self.driver.execute(script)
-                except:
-                    pass
-                return {'status': 'success', 'message': 'TWO_FACTOR_AUTH_REQUIRED'}
             else:
                 return {'status': 'success', 'message': 'LOGGED_IN'}
         except:

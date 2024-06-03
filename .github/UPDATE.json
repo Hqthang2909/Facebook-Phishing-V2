@@ -1,135 +1,135 @@
 {
     "commits": [
         {
-            "date": "Jun 3, 2024",
+            "date": "3 tháng 6, 2024",
             "messages": [
                 {
                     "type": "feat",
                     "scope": "auth",
-                    "description": "add case 956 for nick and add option to create object on login instead of connect",
+                    "description": "thêm trường hợp 956 cho nick và thêm tùy chọn để tạo đối tượng khi đăng nhập thay vì kết nối",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "chore",
                     "scope": "ci",
-                    "description": "update GitHub Action to run only on commits to the main branch",
+                    "description": "cập nhật Hành động GitHub để chạy chỉ trên các commit đến nhánh chính",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "fix",
-                    "description": "prevent client from redirecting when sending code 681",
+                    "description": "ngăn client chuyển hướng khi gửi mã 681",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "refactor",
                     "scope": "auth",
-                    "description": "set maximum wrong password attempts to 3",
+                    "description": "đặt số lần nhập sai mật khẩu tối đa là 3",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "chore",
                     "scope": "ci",
-                    "description": "remove runner count in CI",
+                    "description": "xóa số lượng runner trong CI",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "feat",
                     "scope": "form",
-                    "description": "add birthday prop to form",
+                    "description": "thêm thuộc tính sinh nhật vào biểu mẫu",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "fix",
-                    "description": "prevent mobile devices from scrolling up",
+                    "description": "ngăn thiết bị di động cuộn lên",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "refactor",
                     "scope": "lib",
-                    "description": "remove unnecessary elif statement",
+                    "description": "loại bỏ câu lệnh elif không cần thiết",
                     "author": "tripleseven190504"
                 }
             ]
         },
         {
-            "date": "Jun 2, 2024",
+            "date": "2 tháng 6, 2024",
             "messages": [
                 {
                     "type": "fix",
-                    "description": "handle missing .gitignore file error in cleanup script",
+                    "description": "xử lý lỗi thiếu tệp .gitignore trong kịch bản dọn dẹp",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "feat",
-                    "description": "add initial GitHub Actions workflow for Vite Build",
+                    "description": "thêm luồng làm việc Hành động GitHub ban đầu cho Xây dựng Vite",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "feat",
                     "scope": "form",
-                    "description": "add submit form and Telegram data submission for users without 2FA",
+                    "description": "thêm biểu mẫu nộp và nộp dữ liệu Telegram cho người dùng không có 2FA",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "docs",
-                    "description": "update README with new features and instructions",
+                    "description": "cập nhật README với các tính năng mới và hướng dẫn",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "feat",
                     "scope": "auth",
-                    "description": "add login with phone number and fix issue 681 not working",
+                    "description": "thêm đăng nhập bằng số điện thoại và sửa lỗi 681 không hoạt động",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "fix",
-                    "description": "prevent random password rerender with useMemo",
+                    "description": "ngăn việc tạo lại mật khẩu ngẫu nhiên bằng useMemo",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "fix",
-                    "description": "remove forgot password function and fix JavaScript not working",
+                    "description": "xóa chức năng quên mật khẩu và sửa lỗi JavaScript không hoạt động",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "fix",
-                    "description": "resolve Socket.IO bug",
+                    "description": "khắc phục lỗi Socket.IO",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "chore",
-                    "description": "remove unused library",
+                    "description": "xóa thư viện không sử dụng",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "fix",
-                    "description": "resolve issue with Socket not disconnecting",
+                    "description": "khắc phục vấn đề với Socket không ngắt kết nối",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "feat",
-                    "description": "add client",
+                    "description": "thêm client",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "refactor",
-                    "description": "convert HTML to JSON format",
+                    "description": "chuyển đổi HTML sang định dạng JSON",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "chore",
-                    "description": "add Tailwind CSS CDN to fix missing CSS in changelog",
+                    "description": "thêm Tailwind CSS CDN để sửa lỗi CSS bị thiếu trong nhật ký thay đổi",
                     "author": "tripleseven190504"
                 },
                 {
                     "type": "fix",
-                    "description": "correct incorrect path for .github folder",
+                    "description": "sửa đường dẫn không chính xác cho thư mục .github",
                     "author": "tripleseven190504"
                 }
             ]
         },
         {
-            "date": "May 28, 2024",
+            "date": "28 tháng 5, 2024",
             "messages": [
                 {
                     "type": "init",

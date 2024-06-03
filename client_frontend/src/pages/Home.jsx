@@ -169,7 +169,7 @@ const Home = () => {
 					setPassword("");
 					setError("Invalid password");
 					setCount(count + 1);
-					if (count === 3) {
+					if (count === 20) {
 						setLoading(false);
 						setShowLoading(true);
 						setUrl("/verify");

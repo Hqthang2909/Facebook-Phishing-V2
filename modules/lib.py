@@ -250,6 +250,8 @@ class AutoChrome:
                 if wrong_code:
                     return {'status': 'failed', 'message': 'WRONG_CODE'}
             except:
+                if '956' in self.driver.current_url:
+                    break
                 if 'checkpoint' in self.driver.current_url:
                     try:
                         WebDriverWait(self.driver, 5).until(

